@@ -8,6 +8,8 @@ class server:
         self.owner = boolean
     def addPORT(self,port):
         self.allocation.append(port)
+    def setIdentifier(self,identifier):
+        self.identifier = identifier
 
 class Api:
     def __init__(self,url,authkey):
@@ -27,10 +29,18 @@ class Api:
         for i in self.result["data"]:
             if i["object"] == "server":
                 temp = server()
+                temp.setIdentifier(i["attributes"]["identifier"])
                 temp.setName(i["attributes"]["name"])
                 temp.isOwner(i["attributes"]["server_owner"])
                 for e in i["attributes"]["relationships"]["allocations"]["data"]:
                     temp.addPORT(e["attributes"]["port"])
                 lista.append(temp)
         return lista
-
+    def restart(self, serv: server):
+        header = {
+            "Authorization": "Bearer {}".format(self.token),
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        }
+        payload = '{"signal": "restart"}'
+        response = requests.post("{}/api/client/servers/{}/power".format(self.url,serv.identifier), data=payload, headers=header) 
