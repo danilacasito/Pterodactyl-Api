@@ -8,5 +8,6 @@ Esta es la documentación oficial de Pterodactyl-Api.
 Indice
 =======================
 
-* :ref:`Client`
+* `Client <Client.rst>`
+* `Server <Server.rsy>`
  
