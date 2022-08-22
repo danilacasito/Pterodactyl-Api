@@ -9,5 +9,8 @@ class Api:
             "Accept": "application/json"
         }
         response = requests.get("{}/api/client".format(self.url), headers=headers)
-        self.result = response.json()
+        try:
+            self.result = response.json()
+        except:
+            raise Exception(response.text)
         return self.result
